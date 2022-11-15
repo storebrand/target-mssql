@@ -141,3 +141,4 @@ dmypy.json
 plugins/
 config.json
 poetry.lock
+.dccache
