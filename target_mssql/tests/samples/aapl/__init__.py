@@ -1,0 +1,1 @@
+""" AAPL Sample class """

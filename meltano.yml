@@ -1,0 +1,31 @@
+version: 1
+environments:
+- name: dev
+- name: staging
+- name: prod
+default_environment: prod
+send_anonymous_usage_stats: true
+project_id: target-mssql
+plugins:
+  extractors: []
+  loaders:
+  - name: "target-mssql"
+    namespace: "target_mssql"
+    pip_url: -e .
+    capabilities:
+    - state
+    - catalog
+    - discover
+    config:
+      start_date: '2010-01-01T00:00:00Z'
+    settings:
+    # TODO: To configure using Meltano, declare settings and their types here:
+    - name: username
+    - name: password
+      kind: password
+    - name: start_date
+      value: '2010-01-01T00:00:00Z'
+    - name: host
+    - name: port
+    - name: database
+    - name: default_target_schema

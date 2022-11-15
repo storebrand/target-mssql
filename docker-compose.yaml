@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  sink:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: P@55w0rd
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    ports:
+      - 1433:1433
+  source:
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: SuperS3cret!
+    ports:
+      - 5432:5432
+  # pgsink:
+  #   image: postgres:13
+  #   environment:
+  #     POSTGRES_PASSWORD: SuperS3cret!
+  #   ports:
+  #     - 5431:5432

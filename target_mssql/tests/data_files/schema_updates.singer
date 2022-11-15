@@ -1,0 +1,11 @@
+{"type": "SCHEMA", "stream": "test_schema_updates", "key_properties": ["id"], "schema": {"type": "object", "properties": {"id": {"type": "integer"}, "a1": {"type": "number"}, "a2": {"type": "string"}}}}
+{"type": "RECORD", "stream": "test_schema_updates", "record": {"id": 1, "a1": 101, "a2": "string1"}}
+{"type": "SCHEMA", "stream": "test_schema_updates", "key_properties": ["id"], "schema": {"type": "object", "properties": {"id": {"type": "integer"}, "a1": {"type": "number"}, "a2": {"type": "string"}, "a3": {"type": "boolean"}}}}
+{"type": "RECORD", "stream": "test_schema_updates", "record": {"id": 2, "a1": 102, "a2": "string2", "a3": true}}
+{"type": "SCHEMA", "stream": "test_schema_updates", "key_properties": ["id"], "schema": {"type": "object", "properties": {"id": {"type": "integer"}, "a1": {"type": "number"}, "a2": {"type": "string"}, "a3": {"type": "boolean"}, "a5": {"type": "string", "maxLength": 64}}}}
+{"type": "RECORD", "stream": "test_schema_updates", "record": {"id": 3, "a1": 103, "a2": "string3", "a3": false, "a5": "banana"}}
+{"type": "RECORD", "stream": "test_schema_updates", "record": {"id": 4, "a1": 104, "a2": "string4", "a3": true, "a5": "orange"}}
+{"type": "SCHEMA", "stream": "test_schema_updates", "key_properties": ["id"], "schema": {"type": "object", "properties": {"id": {"type": "integer"}, "a1": {"type": "number"}, "a2": {"type": "string"}, "a3": {"type": "boolean"}, "a5": {"type": "string", "maxLength": 164}, "a6": {"type": "integer"}}}}
+{"type": "RECORD", "stream": "test_schema_updates", "record": {"id": 5, "a1": 105, "a2": "string5", "a3": false, "a5": "apple", "a6": 985}}
+{"type": "RECORD", "stream": "test_schema_updates", "record": {"id": 6, "a1": 106, "a2": "string6", "a3": true, "a5": "banana", "a6": 341}}
+{"type": "STATE", "value": {"test_schema_updates": 6}}
