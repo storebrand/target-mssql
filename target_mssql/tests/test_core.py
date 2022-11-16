@@ -54,7 +54,9 @@ def singer_file_to_target(file_name, target) -> None:
 
 # TODO should set schemas for each tap individually so we don't collide
 # Test name would work well
-@pytest.mark.skip(reason="TODO: Something with identity, doesn't make sense. external API, skipping")
+@pytest.mark.skip(
+    reason="TODO: Something with identity, doesn't make sense. external API, skipping"
+)
 def test_countries_to_mssql(mssql_config):
     tap = SampleTapCountries(config={}, state=None)
     target = Targetmssql(config=mssql_config)
@@ -186,6 +188,7 @@ def test_tap_countries(mssql_target):
 def test_missing_value(mssql_target):
     file_name = "missing_value.singer"
     singer_file_to_target(file_name, mssql_target)
+
 
 @pytest.mark.skip(reason="TODO")
 def test_large_int(mssql_target):
