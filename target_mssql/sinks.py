@@ -156,8 +156,12 @@ class mssqlSink(SQLSink):
                 from_table_name=self.full_table_name
             )
 
-            db_name, schema_name, table_name = self.parse_full_table_name(self.full_table_name)
-            tmp_table_name = f"{schema_name}.#{table_name}" if schema_name else f"#{table_name}"
+            db_name, schema_name, table_name = self.parse_full_table_name(
+                self.full_table_name
+            )
+            tmp_table_name = (
+                f"{schema_name}.#{table_name}" if schema_name else f"#{table_name}"
+            )
             # Insert into temp table
             self.bulk_insert_records(
                 full_table_name=tmp_table_name,
@@ -233,7 +237,6 @@ class mssqlSink(SQLSink):
             self.connection.execute(f"SET IDENTITY_INSERT { to_table_name } OFF")
 
         self.connection.execute("COMMIT")
-
 
     def parse_full_table_name(
         self, full_table_name: str

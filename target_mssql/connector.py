@@ -363,9 +363,12 @@ class mssqlConnector(SQLConnector):
         """Temp table from another table."""
 
         db_name, schema_name, table_name = self.parse_full_table_name(from_table_name)
-        full_table_name = f"{schema_name}.{table_name}" if schema_name else f"{table_name}"
-        tmp_full_table_name = f"{schema_name}.#{table_name}" if schema_name else f"#{table_name}"
-
+        full_table_name = (
+            f"{schema_name}.{table_name}" if schema_name else f"{table_name}"
+        )
+        tmp_full_table_name = (
+            f"{schema_name}.#{table_name}" if schema_name else f"#{table_name}"
+        )
 
         ddl = f"""
             SELECT TOP 0 *
