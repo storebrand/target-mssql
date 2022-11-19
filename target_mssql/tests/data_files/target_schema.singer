@@ -1,0 +1,4 @@
+{"type": "SCHEMA", "stream": "my_schema-table_in_custom_schema", "key_properties": ["id"], "schema": {"required": ["id", "metric"], "type": "object", "properties": {"id": {"type": "integer"}, "metric": {"type": "integer"}}}}
+{"type": "RECORD", "stream": "my_schema-table_in_custom_schema", "record": {"id": 1, "metric": 1}}
+{"type": "RECORD", "stream": "my_schema-table_in_custom_schema", "record": {"id": 2, "metric": 2}}
+{"type": "STATE", "value": {"table_in_custom_schema": 2}}

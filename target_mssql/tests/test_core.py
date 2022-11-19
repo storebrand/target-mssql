@@ -194,3 +194,8 @@ def test_missing_value(mssql_target):
 def test_large_int(mssql_target):
     file_name = "large_int.singer"
     singer_file_to_target(file_name, mssql_target)
+
+
+def test_db_schema(mssql_target):
+    file_name = "target_schema.singer"
+    singer_file_to_target(file_name, mssql_target)
