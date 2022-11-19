@@ -93,6 +93,7 @@ class mssqlConnector(SQLConnector):
 
         _ = partition_keys  # Not supported in generic implementation.
 
+        _, schema_name, table_name = self.parse_full_table_name(full_table_name)
         meta = sqlalchemy.MetaData()
         columns: list[sqlalchemy.Column] = []
         primary_keys = primary_keys or []
@@ -119,7 +120,7 @@ class mssqlConnector(SQLConnector):
                 )
             )
 
-        _ = sqlalchemy.Table(full_table_name, meta, *columns)
+        _ = sqlalchemy.Table(table_name, meta, *columns, schema=schema_name)
         meta.create_all(self._engine)
 
     def merge_sql_types(  # noqa
@@ -361,10 +362,15 @@ class mssqlConnector(SQLConnector):
     def create_temp_table_from_table(self, from_table_name):
         """Temp table from another table."""
 
+        db_name, schema_name, table_name = self.parse_full_table_name(from_table_name)
+        full_table_name = f"{schema_name}.{table_name}" if schema_name else f"{table_name}"
+        tmp_full_table_name = f"{schema_name}.#{table_name}" if schema_name else f"#{table_name}"
+
+
         ddl = f"""
             SELECT TOP 0 *
-            into #{from_table_name}
-            FROM {from_table_name}
+            into {tmp_full_table_name}
+            FROM {full_table_name}
         """
 
         self.connection.execute(ddl)

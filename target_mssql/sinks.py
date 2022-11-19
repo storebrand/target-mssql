@@ -155,18 +155,20 @@ class mssqlSink(SQLSink):
             self.connector.create_temp_table_from_table(
                 from_table_name=self.full_table_name
             )
+
+            db_name, schema_name, table_name = self.parse_full_table_name(self.full_table_name)
+            tmp_table_name = f"{schema_name}.#{table_name}" if schema_name else f"#{table_name}"
             # Insert into temp table
-            self.logger.info("Inserting into temp table")
             self.bulk_insert_records(
-                full_table_name=f"#{self.full_table_name}",
+                full_table_name=tmp_table_name,
                 schema=self.schema,
                 records=context["records"],
             )
             # Merge data from Temp table to main table
             self.logger.info(f"Merging data from temp table to {self.full_table_name}")
             self.merge_upsert_from_table(
-                from_table_name=f"#{self.full_table_name}",
-                to_table_name=f"{self.full_table_name}",
+                from_table_name=tmp_table_name,
+                to_table_name=self.full_table_name,
                 schema=self.schema,
                 join_keys=self.key_properties,
             )
@@ -231,3 +233,34 @@ class mssqlSink(SQLSink):
             self.connection.execute(f"SET IDENTITY_INSERT { to_table_name } OFF")
 
         self.connection.execute("COMMIT")
+
+
+    def parse_full_table_name(
+        self, full_table_name: str
+    ) -> tuple[str | None, str | None, str]:
+        """Parse a fully qualified table name into its parts.
+        Developers may override this method if their platform does not support the
+        traditional 3-part convention: `db_name.schema_name.table_name`
+        Args:
+            full_table_name: A table name or a fully qualified table name. Depending on
+                SQL the platform, this could take the following forms:
+                - `<db>.<schema>.<table>` (three part names)
+                - `<db>.<table>` (platforms which do not use schema groupings)
+                - `<schema>.<name>` (if DB name is already in context)
+                - `<table>` (if DB name and schema name are already in context)
+        Returns:
+            A three part tuple (db_name, schema_name, table_name) with any unspecified
+            or unused parts returned as None.
+        """
+        db_name: str | None = None
+        schema_name: str | None = None
+
+        parts = full_table_name.split(".")
+        if len(parts) == 1:
+            table_name = full_table_name
+        if len(parts) == 2:
+            schema_name, table_name = parts
+        if len(parts) == 3:
+            db_name, schema_name, table_name = parts
+
+        return db_name, schema_name, table_name
