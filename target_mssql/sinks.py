@@ -72,7 +72,7 @@ class mssqlSink(SQLSink):
         full_table_name: str,
         schema: dict,
         records: Iterable[Dict[str, Any]],
-        is_temp_table: bool = False
+        is_temp_table: bool = False,
     ) -> Optional[int]:
         """Bulk insert records to an existing destination table.
         The default implementation uses a generic SQLAlchemy bulk insert operation.
@@ -226,7 +226,7 @@ class mssqlSink(SQLSink):
         """
 
         self.connection.execute(merge_sql)
-        
+
         self.connection.execute("COMMIT")
 
     def parse_full_table_name(
