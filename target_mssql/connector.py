@@ -42,6 +42,7 @@ class mssqlConnector(SQLConnector):
         if primary_keys is None:
             primary_keys = self.key_properties
         partition_keys = partition_keys or None
+        
         self.connector.prepare_table(
             full_table_name=full_table_name,
             primary_keys=primary_keys,
@@ -112,13 +113,23 @@ class mssqlConnector(SQLConnector):
             if isinstance(columntype, sqlalchemy.types.VARCHAR) and is_primary_key:
                 columntype = sqlalchemy.types.VARCHAR(255)
 
-            columns.append(
-                sqlalchemy.Column(
-                    property_name,
-                    columntype,
-                    primary_key=is_primary_key,
+            if is_primary_key:
+                columns.append(
+                    sqlalchemy.Column(
+                        property_name,
+                        columntype,
+                        primary_key=True,
+                        autoincrement=False
+                    )
                 )
-            )
+            else:
+                columns.append(
+                    sqlalchemy.Column(
+                        property_name,
+                        columntype,
+                        primary_key=False
+                    )
+                )
 
         _ = sqlalchemy.Table(table_name, meta, *columns, schema=schema_name)
         meta.create_all(self._engine)

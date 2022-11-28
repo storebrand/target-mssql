@@ -106,13 +106,7 @@ class mssqlSink(SQLSink):
                 insert_record[column.name] = record.get(column.name)
             insert_records.append(insert_record)
 
-        if self.key_properties and not is_temp_table:
-            self.connection.execute(f"SET IDENTITY_INSERT { full_table_name } ON")
-
         self.connection.execute(insert_sql, insert_records)
-
-        if self.key_properties and not is_temp_table:
-            self.connection.execute(f"SET IDENTITY_INSERT { full_table_name } OFF")
 
         if isinstance(records, list):
             return len(records)  # If list, we can quickly return record count.
@@ -231,14 +225,8 @@ class mssqlSink(SQLSink):
                 VALUES ({", ".join([f"temp.{key}" for key in schema["properties"].keys()])});
         """
 
-        if self.key_properties:
-            self.connection.execute(f"SET IDENTITY_INSERT { to_table_name } ON")
-
         self.connection.execute(merge_sql)
-
-        if self.key_properties:
-            self.connection.execute(f"SET IDENTITY_INSERT { to_table_name } OFF")
-
+        
         self.connection.execute("COMMIT")
 
     def parse_full_table_name(
