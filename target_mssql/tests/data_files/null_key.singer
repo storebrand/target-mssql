@@ -1,0 +1,3 @@
+{"type": "SCHEMA", "stream": "null_key", "schema": {"type": "object", "properties": { "id": {"type": ["string", "null"]}, "client_name": {"type": "string"} }}, "key_properties": ["id"]}
+{"type": "RECORD", "stream": "null_key", "record": {"id": "1", "client_name": "Gitter Windows Desktop App"}}
+{"type": "RECORD", "stream": "null_key", "record": {"id": "2", "client_name": "Gitter iOS App"}}

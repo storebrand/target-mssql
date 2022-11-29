@@ -199,3 +199,13 @@ def test_large_int(mssql_target):
 def test_db_schema(mssql_target):
     file_name = "target_schema.singer"
     singer_file_to_target(file_name, mssql_target)
+
+
+def test_simple_stream(mssql_target):
+    file_name = "simple_stream.singer"
+    singer_file_to_target(file_name, mssql_target)
+
+
+def test_null_key(mssql_target):
+    file_name = "null_key.singer"
+    singer_file_to_target(file_name, mssql_target)
