@@ -99,7 +99,7 @@ def test_record_missing_required_property(mssql_target):
 
 # TODO test that data is correctly set
 # see target-sqllit/tests/test_target_sqllite.py
-@pytest.mark.skip(reason="Waiting for SDK to handle this")
+#@pytest.mark.skip(reason="Waiting for SDK to handle this")
 def test_column_camel_case(mssql_target):
     file_name = "camelcase.singer"
     singer_file_to_target(file_name, mssql_target)
