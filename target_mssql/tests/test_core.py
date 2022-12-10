@@ -62,7 +62,7 @@ def test_countries_to_mssql(mssql_config):
     target = Targetmssql(config=mssql_config)
     sync_end_to_end(tap, target)
 
-
+@pytest.mark.skip("Can't handle objects yet")
 def test_aapl_to_mssql(mssql_config):
     tap = Fundamentals(config={}, state=None)
     target = Targetmssql(config=mssql_config)
