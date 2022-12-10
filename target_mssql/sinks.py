@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, Iterable, List, Optional
 
 import sqlalchemy
+from singer_sdk.helpers._conformers import replace_leading_digit
 from singer_sdk.sinks import SQLSink
 from sqlalchemy import Column
 
@@ -258,3 +260,26 @@ class mssqlSink(SQLSink):
             db_name, schema_name, table_name = parts
 
         return db_name, schema_name, table_name
+
+    def snakecase(self, name):
+        name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+        name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", name)
+        return name.lower()
+
+    def conform_name(self, name: str, object_type: Optional[str] = None) -> str:
+        """Conform a stream property name to one suitable for the target system.
+        Transforms names to snake case by default, applicable to most common DBMSs'.
+        Developers may override this method to apply custom transformations
+        to database/schema/table/column names.
+        Args:
+            name: Property name.
+            object_type: One of ``database``, ``schema``, ``table`` or ``column``.
+        Returns:
+            The name transformed to snake case.
+        """
+        # strip non-alphanumeric characters, keeping - . _ and spaces
+        name = re.sub(r"[^a-zA-Z0-9_\-\.\s]", "", name)
+        # convert to snakecase
+        name = self.snakecase(name)
+        # replace leading digit
+        return replace_leading_digit(name)
