@@ -363,7 +363,6 @@ class mssqlConnector(SQLConnector):
 
         return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.VARCHAR())
 
-
     def create_temp_table_from_table(self, from_table_name):
         """Temp table from another table."""
 
