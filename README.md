@@ -7,7 +7,6 @@ Build with the [Meltano Target SDK](https://sdk.meltano.com).
 ## Known limitations
 
 - Does not handle complex types such as objects and arrays
-- Does not sanitize column names, so might fail on strange column names
 - Does not handle large INTs
 - Does not handle encoded strings
 
