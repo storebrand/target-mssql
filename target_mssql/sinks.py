@@ -270,10 +270,12 @@ class mssqlSink(SQLSink):
 
         return db_name, schema_name, table_name
 
+
     def snakecase(self, name):
         name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
         name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", name)
         return name.lower()
+
 
     def conform_name(self, name: str, object_type: Optional[str] = None) -> str:
         """Conform a stream property name to one suitable for the target system.

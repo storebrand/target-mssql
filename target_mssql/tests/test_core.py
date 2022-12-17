@@ -63,7 +63,7 @@ def test_countries_to_mssql(mssql_config):
     sync_end_to_end(tap, target)
 
 @pytest.mark.skip("Can't handle objects yet")
-def test_aapl_to_mssql(mssql_config):
+def test_table(mssql_config):
     tap = Fundamentals(config={}, state=None)
     target = Targetmssql(config=mssql_config)
     sync_end_to_end(tap, target)
@@ -173,7 +173,7 @@ def test_encoded_string_data(mssql_target):
     file_name = "encoded_strings.singer"
     singer_file_to_target(file_name, mssql_target)
 
-
+@pytest.mark.skip(reason="Can't handle objects yet")
 def test_tap_appl(mssql_target):
     file_name = "tap_aapl.singer"
     singer_file_to_target(file_name, mssql_target)
@@ -208,4 +208,13 @@ def test_simple_stream(mssql_target):
 
 def test_null_key(mssql_target):
     file_name = "null_key.singer"
+    singer_file_to_target(file_name, mssql_target)
+
+def test_simple_continents(mssql_target):
+    file_name = "simple_continents.singer"
+    singer_file_to_target(file_name, mssql_target)
+
+@pytest.mark.skip(reason="TODO")
+def test_simple_countries(mssql_target):
+    file_name = "simple_countries.singer"
     singer_file_to_target(file_name, mssql_target)

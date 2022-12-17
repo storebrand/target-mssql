@@ -1,0 +1,10 @@
+{"type": "SCHEMA", "stream": "nocontinents", "schema": {"properties": {"code": {"type": ["null", "string"]}, "name": {"type": ["null", "string"]}}, "type": "object"}, "key_properties": []}
+{"type": "RECORD", "stream": "nocontinents", "record": {"code": "AF", "name": "Africa"}, "time_extracted": "2022-07-17T20:43:18.860687Z"}
+{"type": "STATE", "value": {"bookmarks": {"nocontinents": {"starting_replication_value": null}}}}
+{"type": "RECORD", "stream": "nocontinents", "record": {"code": "AN", "name": "Antarctica"}, "time_extracted": "2022-07-17T20:43:18.860817Z"}
+{"type": "RECORD", "stream": "nocontinents", "record": {"code": "AS", "name": "Asia"}, "time_extracted": "2022-07-17T20:43:18.860857Z"}
+{"type": "RECORD", "stream": "nocontinents", "record": {"code": "EU", "name": "Europe"}, "time_extracted": "2022-07-17T20:43:18.860890Z"}
+{"type": "RECORD", "stream": "nocontinents", "record": {"code": "NA", "name": "North America"}, "time_extracted": "2022-07-17T20:43:18.860922Z"}
+{"type": "RECORD", "stream": "nocontinents", "record": {"code": "OC", "name": "Oceania"}, "time_extracted": "2022-07-17T20:43:18.860952Z"}
+{"type": "RECORD", "stream": "nocontinents", "record": {"code": "SA", "name": "South America"}, "time_extracted": "2022-07-17T20:43:18.860983Z"}
+{"type": "STATE", "value": {"bookmarks": {"nocontinents": {}}}}
