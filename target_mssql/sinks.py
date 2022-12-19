@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, Iterable, List, Optional
 
 import sqlalchemy
+from singer_sdk.helpers._conformers import replace_leading_digit
 from singer_sdk.sinks import SQLSink
 from sqlalchemy import Column
 
@@ -137,13 +139,21 @@ class mssqlSink(SQLSink):
             context: Stream partition or context dictionary.
         """
         # First we need to be sure the main table is already created
+        conformed_records = (
+            [self.conform_record(record) for record in context["records"]]
+            if isinstance(context["records"], list)
+            else (self.conform_record(record) for record in context["records"])
+        )
+
+        join_keys = [self.conform_name(key, "column") for key in self.key_properties]
+        schema = self.conform_schema(self.schema)
 
         if self.key_properties:
             self.logger.info(f"Preparing table {self.full_table_name}")
             self.connector.prepare_table(
                 full_table_name=self.full_table_name,
-                schema=self.schema,
-                primary_keys=self.key_properties,
+                schema=schema,
+                primary_keys=join_keys,
                 as_temp_table=False,
             )
             # Create a temp table (Creates from the table above)
@@ -161,8 +171,8 @@ class mssqlSink(SQLSink):
             # Insert into temp table
             self.bulk_insert_records(
                 full_table_name=tmp_table_name,
-                schema=self.schema,
-                records=context["records"],
+                schema=schema,
+                records=conformed_records,
                 is_temp_table=True,
             )
             # Merge data from Temp table to main table
@@ -170,15 +180,15 @@ class mssqlSink(SQLSink):
             self.merge_upsert_from_table(
                 from_table_name=tmp_table_name,
                 to_table_name=self.full_table_name,
-                schema=self.schema,
-                join_keys=self.key_properties,
+                schema=schema,
+                join_keys=join_keys,
             )
 
         else:
             self.bulk_insert_records(
                 full_table_name=self.full_table_name,
-                schema=self.schema,
-                records=context["records"],
+                schema=schema,
+                records=conformed_records,
             )
 
     def merge_upsert_from_table(
@@ -258,3 +268,26 @@ class mssqlSink(SQLSink):
             db_name, schema_name, table_name = parts
 
         return db_name, schema_name, table_name
+
+    def snakecase(self, name):
+        name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+        name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", name)
+        return name.lower()
+
+    def conform_name(self, name: str, object_type: Optional[str] = None) -> str:
+        """Conform a stream property name to one suitable for the target system.
+        Transforms names to snake case by default, applicable to most common DBMSs'.
+        Developers may override this method to apply custom transformations
+        to database/schema/table/column names.
+        Args:
+            name: Property name.
+            object_type: One of ``database``, ``schema``, ``table`` or ``column``.
+        Returns:
+            The name transformed to snake case.
+        """
+        # strip non-alphanumeric characters, keeping - . _ and spaces
+        name = re.sub(r"[^a-zA-Z0-9_\-\.\s]", "", name)
+        # convert to snakecase
+        name = self.snakecase(name)
+        # replace leading digit
+        return replace_leading_digit(name)
