@@ -18,6 +18,31 @@ class Targetmssql(SQLTarget):
             th.StringType,
             description="SQLAlchemy connection string",
         ),
+        th.Property(
+            "username",
+            th.StringType,
+            description="SQL Server username",
+        ),
+        th.Property(
+            "password",
+            th.StringType,
+            description="SQL Server password",
+        ),
+        th.Property(
+            "host",
+            th.StringType,
+            description="SQL Server host",
+        ),
+        th.Property(
+            "port",
+            th.StringType,
+            description="SQL Server port",
+        ),
+        th.Property(
+            "database",
+            th.StringType,
+            description="SQL Server database",
+        )
     ).to_dict()
 
     default_sink_class = mssqlSink
