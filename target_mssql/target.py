@@ -36,12 +36,18 @@ class Targetmssql(SQLTarget):
         th.Property(
             "port",
             th.StringType,
+            default='1433',
             description="SQL Server port",
         ),
         th.Property(
             "database",
             th.StringType,
             description="SQL Server database",
+        ),
+        th.Property(
+            "default_target_schema",
+            th.StringType,
+            description="Default target schema to write to",
         )
     ).to_dict()
 
