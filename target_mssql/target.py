@@ -36,7 +36,7 @@ class Targetmssql(SQLTarget):
         th.Property(
             "port",
             th.StringType,
-            default='1433',
+            default="1433",
             description="SQL Server port",
         ),
         th.Property(
@@ -48,7 +48,7 @@ class Targetmssql(SQLTarget):
             "default_target_schema",
             th.StringType,
             description="Default target schema to write to",
-        )
+        ),
     ).to_dict()
 
     default_sink_class = mssqlSink

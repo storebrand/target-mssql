@@ -237,7 +237,7 @@ class mssqlSink(SQLSink):
 
         self.connection.execute(merge_sql)
 
-#        self.connection.execute("COMMIT")
+    #        self.connection.execute("COMMIT")
 
     def parse_full_table_name(
         self, full_table_name: str

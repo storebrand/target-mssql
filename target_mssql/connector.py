@@ -343,7 +343,7 @@ class mssqlConnector(SQLConnector):
                 if datelike_type == "date":
                     return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.DATE())
 
-            maxlength = jsonschema_type.get("maxLength")
+            maxlength = min(jsonschema_type.get("maxLength"), 8000)
             return cast(
                 sqlalchemy.types.TypeEngine, sqlalchemy.types.VARCHAR(maxlength)
             )
@@ -382,5 +382,5 @@ class mssqlConnector(SQLConnector):
             into {tmp_full_table_name}
             FROM {full_table_name}
         """
-        
+
         self.connection.execute(ddl)
