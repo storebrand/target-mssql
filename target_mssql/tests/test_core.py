@@ -19,7 +19,7 @@ def mssql_config():
     return {
         #"sqlalchemy_url": "mssql+pymssql://sa:p@55w0rd@localhost:1433/master",
         "schema": "dbo",
-        "user": "sa",
+        "username": "sa",
         "password": "P@55w0rd",
         "host": "localhost",
         "port": "1433",
