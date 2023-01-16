@@ -343,12 +343,11 @@ class mssqlConnector(SQLConnector):
                 if datelike_type == "date":
                     return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.DATE())
 
-            maxlength = jsonschema_type.get("maxLength")
-            if maxlength > 8000:
-                maxlength = 8000
+            maxlength = jsonschema_type.get("maxLength") or 8000
+            target_length = min(maxlength, 8000)
 
             return cast(
-                sqlalchemy.types.TypeEngine, sqlalchemy.types.VARCHAR(maxlength)
+                sqlalchemy.types.TypeEngine, sqlalchemy.types.VARCHAR(target_length)
             )
 
         if self._jsonschema_type_check(jsonschema_type, ("integer",)):
