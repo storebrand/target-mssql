@@ -346,9 +346,7 @@ class mssqlConnector(SQLConnector):
             maxlength = jsonschema_type.get("maxLength")
             if maxlength is not None:
                 if maxlength > 8000:
-                    return cast(
-                        sqlalchemy.types.TypeEngine, sqlalchemy.types.TEXT()
-                    )
+                    return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.TEXT())
 
             return cast(
                 sqlalchemy.types.TypeEngine, sqlalchemy.types.VARCHAR(maxlength)
