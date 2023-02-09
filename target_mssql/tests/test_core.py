@@ -175,7 +175,7 @@ def test_encoded_string_data(mssql_target):
     singer_file_to_target(file_name, mssql_target)
 
 
-@pytest.mark.skip(reason="Can't handle objects yet")
+#@pytest.mark.skip(reason="Can't handle objects yet")
 def test_tap_appl(mssql_target):
     file_name = "tap_aapl.singer"
     singer_file_to_target(file_name, mssql_target)
@@ -192,7 +192,6 @@ def test_missing_value(mssql_target):
     singer_file_to_target(file_name, mssql_target)
 
 
-@pytest.mark.skip(reason="TODO")
 def test_large_int(mssql_target):
     file_name = "large_int.singer"
     singer_file_to_target(file_name, mssql_target)
@@ -221,4 +220,9 @@ def test_simple_continents(mssql_target):
 @pytest.mark.skip(reason="TODO")
 def test_simple_countries(mssql_target):
     file_name = "simple_countries.singer"
+    singer_file_to_target(file_name, mssql_target)
+
+
+def test_invalid_data_type(mssql_target):
+    file_name = "invalid_data_type.singer"
     singer_file_to_target(file_name, mssql_target)
