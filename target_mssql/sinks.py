@@ -107,8 +107,10 @@ class mssqlSink(SQLSink):
             for column in columns:
                 insert_record[column.name] = record.get(column.name)
             insert_records.append(insert_record)
-
-        self.connection.execute(insert_sql, insert_records)
+        try:
+            self.connection.execute(insert_sql, insert_records)
+        except Exception as e:
+            raise Exception("Could not bulk-insert records, error message supressed for privacy reasons.")
 
         if isinstance(records, list):
             return len(records)  # If list, we can quickly return record count.
@@ -235,9 +237,11 @@ class mssqlSink(SQLSink):
                 VALUES ({", ".join([f"temp.{key}" for key in schema["properties"].keys()])});
         """
 
-        self.connection.execute(merge_sql)
-
-        self.connection.execute("COMMIT")
+        try:
+            self.connection.execute(merge_sql)
+            self.connection.execute("COMMIT")
+        except Exception as e:
+            raise Exception("Not able to merge table, error message supressed for privacy reasons.")
 
     def parse_full_table_name(
         self, full_table_name: str
