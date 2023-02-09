@@ -27,6 +27,17 @@ class mssqlSink(SQLSink):
         """
         return self._connector
 
+
+    def create_sqlalchemy_engine(self) -> sqlalchemy.engine.Engine:
+        """Return a new SQLAlchemy engine using the provided config.
+        Developers can generally override just one of the following:
+        `sqlalchemy_engine`, sqlalchemy_url`.
+        Returns:
+            A newly created SQLAlchemy engine object.
+        """
+        return sqlalchemy.create_engine(self.sqlalchemy_url, echo=False, hide_parameters=True)
+
+
     @property
     def schema_name(self) -> Optional[str]:
         """Return the schema name or `None` if using names with no schema part.
@@ -108,7 +119,7 @@ class mssqlSink(SQLSink):
                 insert_record[column.name] = record.get(column.name)
             insert_records.append(insert_record)
 
-        self.connection.execute(insert_sql, insert_records, execution_options={'echo': False})
+        self.connection.execute(insert_sql, insert_records, execution_options={'echo': False, 'hide_parameters': True})
 
         # try:
         #     self.connection.execute(insert_sql, insert_records)
