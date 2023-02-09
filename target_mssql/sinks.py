@@ -119,12 +119,12 @@ class mssqlSink(SQLSink):
                 insert_record[column.name] = record.get(column.name)
             insert_records.append(insert_record)
 
-        self.connection.execute(insert_sql, insert_records, execution_options={'echo': False, 'hide_parameters': True})
+        # self.connection.execute(insert_sql, insert_records, execution_options={'echo': False, 'hide_parameters': True})
 
-        # try:
-        #     self.connection.execute(insert_sql, insert_records)
-        # except Exception as e:
-        #     raise Exception(f"{e} <- ERROR")
+        try:
+            self.connection.execute(insert_sql, insert_records, execution_options={'echo': False, 'hide_parameters': True})
+        except Exception as e:
+            raise Exception(f"ERROR <-> ERROR")
 
         if isinstance(records, list):
             return len(records)  # If list, we can quickly return record count.
