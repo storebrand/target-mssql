@@ -360,7 +360,7 @@ class mssqlConnector(SQLConnector):
             return cast(sqlalchemy.types.TypeEngine, mssql.VARCHAR(1))
 
         if self._jsonschema_type_check(jsonschema_type, ("object",)):
-            return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.JSON())
+            return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.VARCHAR())
 
         if self._jsonschema_type_check(jsonschema_type, ("array",)):
             return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.JSON())

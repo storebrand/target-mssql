@@ -9,7 +9,7 @@ import sqlalchemy
 from singer_sdk.helpers._conformers import replace_leading_digit
 from singer_sdk.sinks import SQLSink
 from sqlalchemy import Column
-
+import json
 from target_mssql.connector import mssqlConnector
 
 
@@ -64,8 +64,8 @@ class mssqlSink(SQLSink):
         """
         keys = record.keys()
         for key in keys:
-            if type(record[key]) is list:
-                record[key] = str(record[key])
+            if type(record[key]) in [list, dict]:
+                record[key] = json.dumps(record[key], default=str)
 
         return record
 
