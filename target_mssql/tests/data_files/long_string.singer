@@ -1,0 +1,3 @@
+{"type": "SCHEMA", "stream": "long_string", "schema": {"type": "object", "properties": { "CustomerID": {"type": "string", "maxlength": 12000}, "clientName": {"type": "string"} }}, "key_properties": ["CustomerID"]}
+{"type": "RECORD", "stream": "long_string", "record": {"CustomerID": "1", "clientName": "Gitter Windows Desktop App"}}
+{"type": "RECORD", "stream": "long_string", "record": {"CustomerID": "2", "clientName": "Gitter iOS App"}}

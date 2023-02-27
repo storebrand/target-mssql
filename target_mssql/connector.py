@@ -62,7 +62,7 @@ class mssqlConnector(SQLConnector):
 
         connection_url = sqlalchemy.engine.url.URL.create(
             drivername="mssql+pymssql",
-            username=config["user"],
+            username=config["username"],
             password=config["password"],
             host=config["host"],
             port=config["port"],
@@ -344,6 +344,10 @@ class mssqlConnector(SQLConnector):
                     return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.DATE())
 
             maxlength = jsonschema_type.get("maxLength")
+            if maxlength is not None:
+                if maxlength > 8000:
+                    return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.TEXT())
+
             return cast(
                 sqlalchemy.types.TypeEngine, sqlalchemy.types.VARCHAR(maxlength)
             )
@@ -356,7 +360,7 @@ class mssqlConnector(SQLConnector):
             return cast(sqlalchemy.types.TypeEngine, mssql.VARCHAR(1))
 
         if self._jsonschema_type_check(jsonschema_type, ("object",)):
-            return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.JSON())
+            return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.VARCHAR())
 
         if self._jsonschema_type_check(jsonschema_type, ("array",)):
             return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.JSON())
@@ -373,6 +377,9 @@ class mssqlConnector(SQLConnector):
         tmp_full_table_name = (
             f"{schema_name}.#{table_name}" if schema_name else f"#{table_name}"
         )
+
+        droptable = f"DROP TABLE IF EXISTS {tmp_full_table_name}"
+        self.connection.execute(droptable)
 
         ddl = f"""
             SELECT TOP 0 *

@@ -1,0 +1,3 @@
+{"type": "SCHEMA", "stream": "column_comments", "schema": {"required": ["id"], "type": "object", "properties": { "id": {"type": ["string", "null"], "description": "System ID of the client"}, "client_name": {"type": "string", "description": "The name of the client"} }}, "key_properties": ["id"]}
+{"type": "RECORD", "stream": "column_comments", "record": {"id": "1", "client_name": "Gitter Windows Desktop App"}}
+{"type": "RECORD", "stream": "column_comments", "record": {"id": "2", "client_name": "Gitter iOS App"}}

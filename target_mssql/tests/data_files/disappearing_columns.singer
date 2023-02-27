@@ -1,0 +1,6 @@
+{"type": "SCHEMA", "stream": "disappearing_columns", "schema": {"required": ["id"], "type": "object", "properties": { "id": {"type": ["string", "null"], "description": "System ID of the client"}, "client_name": {"type": "string", "description": "The name of the client"}, "client_details": {"type": "string", "description": "The details of the client"} }}, "key_properties": ["id"]}
+{"type": "RECORD", "stream": "disappearing_columns", "record": {"id": "1", "client_name": "Gitter Windows Desktop App", "client_details": "An application for windows"}}
+{"type": "RECORD", "stream": "disappearing_columns", "record": {"id": "2", "client_name": "Gitter iOS App", "client_details": "An application for iOS"}}
+{"type": "SCHEMA", "stream": "disappearing_columns", "schema": {"required": ["id"], "type": "object", "properties": { "id": {"type": ["string", "null"], "description": "System ID of the client"}, "client_name": {"type": "string", "description": "The name of the client"} }}, "key_properties": ["id"]}
+{"type": "RECORD", "stream": "disappearing_columns", "record": {"id": "3", "client_name": "Mirror Android app"}}
+{"type": "RECORD", "stream": "disappearing_columns", "record": {"id": "4", "client_name": "Mirror Webapp"}}

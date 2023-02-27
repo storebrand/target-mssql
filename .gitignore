@@ -142,3 +142,4 @@ plugins/
 config.json
 poetry.lock
 .dccache
+_jottings.py
