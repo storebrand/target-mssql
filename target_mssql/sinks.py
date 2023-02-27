@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Any, Dict, Iterable, List, Optional
 
@@ -64,8 +65,8 @@ class mssqlSink(SQLSink):
         """
         keys = record.keys()
         for key in keys:
-            if type(record[key]) is list:
-                record[key] = str(record[key])
+            if type(record[key]) in [list, dict]:
+                record[key] = json.dumps(record[key], default=str)
 
         return record
 

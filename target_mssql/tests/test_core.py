@@ -63,7 +63,7 @@ def test_countries_to_mssql(mssql_config):
     sync_end_to_end(tap, target)
 
 
-@pytest.mark.skip("Can't handle objects yet")
+# @pytest.mark.skip("Can't handle objects yet")
 def test_table(mssql_config):
     tap = Fundamentals(config={}, state=None)
     target = Targetmssql(config=mssql_config)
@@ -107,7 +107,7 @@ def test_column_camel_case(mssql_target):
 
 
 # TODO test that data is correctly set
-@pytest.mark.skip(reason="Waiting for SDK to handle this")
+# @pytest.mark.skip(reason="Waiting for SDK to handle this")
 def test_special_chars_in_attributes(mssql_target):
     file_name = "special_chars_in_attributes.singer"
     singer_file_to_target(file_name, mssql_target)
@@ -175,13 +175,13 @@ def test_encoded_string_data(mssql_target):
     singer_file_to_target(file_name, mssql_target)
 
 
-@pytest.mark.skip(reason="Can't handle objects yet")
+# @pytest.mark.skip(reason="Can't handle objects yet")
 def test_tap_appl(mssql_target):
     file_name = "tap_aapl.singer"
     singer_file_to_target(file_name, mssql_target)
 
 
-@pytest.mark.skip(reason="TODO")
+# @pytest.mark.skip(reason="TODO")
 def test_tap_countries(mssql_target):
     file_name = "tap_countries.singer"
     singer_file_to_target(file_name, mssql_target)
@@ -221,4 +221,9 @@ def test_simple_continents(mssql_target):
 @pytest.mark.skip(reason="TODO")
 def test_simple_countries(mssql_target):
     file_name = "simple_countries.singer"
+    singer_file_to_target(file_name, mssql_target)
+
+
+def test_disappearing_columns(mssql_target):
+    file_name = "disappearing_columns.singer"
     singer_file_to_target(file_name, mssql_target)
