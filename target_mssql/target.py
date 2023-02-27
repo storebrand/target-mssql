@@ -9,7 +9,7 @@ from target_mssql.sinks import mssqlSink
 
 
 class Targetmssql(SQLTarget):
-    """Sample target for mssql."""
+    """Singer target for mssql."""
 
     name = "target-mssql"
     config_jsonschema = th.PropertiesList(

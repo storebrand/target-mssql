@@ -6,8 +6,7 @@ Build with the [Meltano Target SDK](https://sdk.meltano.com).
 
 ## Known limitations
 
-- Does not handle complex types such as objects and arrays
-- Does not handle large INTs
+- Objects and arrays are converted to strings, as writing json/arrays isn't supported in the underlying library that is used.
 - Does not handle encoded strings
 
 <!--
