@@ -238,8 +238,6 @@ class mssqlSink(SQLSink):
 
         with self.connection.begin():
             self.connection.execute(merge_sql)
-        
-
 
     def parse_full_table_name(
         self, full_table_name: str
