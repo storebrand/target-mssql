@@ -236,9 +236,8 @@ class mssqlSink(SQLSink):
                 VALUES ({", ".join([f"temp.{key}" for key in schema["properties"].keys()])});
         """
 
-        self.connection.execute(merge_sql)
-
-        self.connection.execute("COMMIT")
+        with self.connection.begin():
+            self.connection.execute(merge_sql)
 
     def parse_full_table_name(
         self, full_table_name: str
