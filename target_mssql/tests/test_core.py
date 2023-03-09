@@ -227,3 +227,11 @@ def test_simple_countries(mssql_target):
 def test_disappearing_columns(mssql_target):
     file_name = "disappearing_columns.singer"
     singer_file_to_target(file_name, mssql_target)
+
+
+def test_insert_merge(mssql_target):
+    file_name = "insert_merge_part1.singer"
+    singer_file_to_target(file_name, mssql_target)
+
+    file_name = "insert_merge_part2.singer"
+    singer_file_to_target(file_name, mssql_target)
