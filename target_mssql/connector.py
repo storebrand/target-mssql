@@ -60,6 +60,9 @@ class mssqlConnector(SQLConnector):
             config: The configuration for the connector.
         """
 
+        if config.get("sqlalchemy_url"):
+            return config["sqlalchemy_url"]
+        
         connection_url = sqlalchemy.engine.url.URL.create(
             drivername="mssql+pymssql",
             username=config["username"],

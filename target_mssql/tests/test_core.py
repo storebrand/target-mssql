@@ -3,6 +3,7 @@
 import io
 from contextlib import redirect_stdout
 from pathlib import Path
+from urllib.parse import quote
 
 import pytest
 from singer_sdk.testing import sync_end_to_end
@@ -26,10 +27,26 @@ def mssql_config():
         "database": "master",
     }
 
+@pytest.fixture()
+def mssql_dualconfig():
+    return {
+        "sqlalchemy_url": f"mssql+pymssql://sa:P%4055w0rd@localhost:1433/master",
+        "schema": "dbo",
+        "username": "sa",
+        "password": "wrong_password",
+        "host": "localhost",
+        "port": "1433",
+        "database": "master",
+    }
+
 
 @pytest.fixture
 def mssql_target(mssql_config) -> Targetmssql:
     return Targetmssql(config=mssql_config)
+
+@pytest.fixture
+def mssql_dualtarget(mssql_dualconfig) -> Targetmssql:
+    return Targetmssql(config=mssql_dualconfig)
 
 
 def singer_file_to_target(file_name, target) -> None:
@@ -203,9 +220,9 @@ def test_db_schema(mssql_target):
     singer_file_to_target(file_name, mssql_target)
 
 
-def test_simple_stream(mssql_target):
+def test_dual_target_config(mssql_dualtarget):
     file_name = "simple_stream.singer"
-    singer_file_to_target(file_name, mssql_target)
+    singer_file_to_target(file_name, mssql_dualtarget)
 
 
 def test_null_key(mssql_target):
@@ -235,3 +252,4 @@ def test_insert_merge(mssql_target):
 
     file_name = "insert_merge_part2.singer"
     singer_file_to_target(file_name, mssql_target)
+
