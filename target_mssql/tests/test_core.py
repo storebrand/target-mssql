@@ -27,6 +27,7 @@ def mssql_config():
         "database": "master",
     }
 
+
 @pytest.fixture()
 def mssql_dualconfig():
     return {
@@ -43,6 +44,7 @@ def mssql_dualconfig():
 @pytest.fixture
 def mssql_target(mssql_config) -> Targetmssql:
     return Targetmssql(config=mssql_config)
+
 
 @pytest.fixture
 def mssql_dualtarget(mssql_dualconfig) -> Targetmssql:
@@ -252,4 +254,3 @@ def test_insert_merge(mssql_target):
 
     file_name = "insert_merge_part2.singer"
     singer_file_to_target(file_name, mssql_target)
-
