@@ -1,6 +1,6 @@
 # target-mssql
 
-`target-mssql` is a Singer target for mssql.
+`target-mssql` is a Singer target for Microsoft SQL Server databases.
 
 Build with the [Meltano Target SDK](https://sdk.meltano.com).
 
@@ -8,6 +8,25 @@ Build with the [Meltano Target SDK](https://sdk.meltano.com).
 
 - Objects and arrays are converted to strings, as writing json/arrays isn't supported in the underlying library that is used.
 - Does not handle encoded strings
+
+## Installation
+
+Install from Meltano:
+```bash
+meltano add loader target-mssql
+```
+
+Install from PyPi:
+
+```bash
+pipx install target-mssql
+```
+
+Install from GitHub:
+
+```bash
+pipx install git+https://github.com/storebrand/target-mssql.git@main
+```
 
 <!--
 
@@ -24,24 +43,39 @@ pipx install target-mssql
 Install from GitHub:
 
 ```bash
-pipx install git+https://github.com/ORG_NAME/target-mssql.git@main
+pipx install git+https://github.com/storebrand/target-mssql.git@main
 ```
 
 -->
 
 ## Configuration
 
-### Accepted Config Options
+## Accepted Config Options
+Regarding connection info, either the `sqlalchemy_url` or `username`, `password`, `host`, and `database` needs to be specified. If the `sqlalchemy_url` is set, the other connection parameters are ignored.
 
-<!--
-Developer TODO: Provide a list of config options accepted by the target.
+## Capabilities
 
-This section can be created by copy-pasting the CLI output from:
+* `about`
+* `stream-maps`
+* `schema-flattening`
 
-```
-target-mssql --about --format=markdown
-```
--->
+## Settings
+
+| Setting              | Required | Default | Description |
+|:---------------------|:--------:|:-------:|:------------|
+| sqlalchemy_url       | False    | None    | SQLAlchemy connection string |
+| username             | False    | None    | SQL Server username |
+| password             | False    | None    | SQL Server password |
+| host                 | False    | None    | SQL Server host |
+| port                 | False    | 1433    | SQL Server port |
+| database             | False    | None    | SQL Server database |
+| default_target_schema| False    | None    | Default target schema to write to |
+| stream_maps          | False    | None    | Config object for stream maps capability. For more information check out [Stream Maps](https://sdk.meltano.com/en/latest/stream_maps.html). |
+| stream_map_config    | False    | None    | User-defined config values to be used within map expressions. |
+| flattening_enabled   | False    | None    | 'True' to enable schema flattening and automatically expand nested properties. |
+| flattening_max_depth | False    | None    | The max depth to flatten schemas. |
+
+A full list of supported settings and capabilities is available by running: `target-mssql --about`
 
 A full list of supported settings and capabilities for this
 target is available by running:
