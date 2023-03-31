@@ -254,3 +254,11 @@ def test_insert_merge(mssql_target):
 
     file_name = "insert_merge_part2.singer"
     singer_file_to_target(file_name, mssql_target)
+
+
+def test_composite_key(mssql_target):
+    file_name = "composite_key_part1.singer"
+    singer_file_to_target(file_name, mssql_target)
+
+    file_name = "composite_key_part2.singer"
+    singer_file_to_target(file_name, mssql_target)

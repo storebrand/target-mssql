@@ -286,7 +286,7 @@ class mssqlSink(SQLSink):
             The name transformed to snake case.
         """
         # strip non-alphanumeric characters, keeping - . _ and spaces
-        name = re.sub(r"[^a-zA-Z0-9_\-\.\s]", "", name)
+        name = re.sub(r"[^a-zA-Z0-9_]", "_", name)
         # convert to snakecase
         name = self.snakecase(name)
         # replace leading digit
