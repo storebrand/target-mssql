@@ -25,6 +25,7 @@ def mssql_config():
         "host": "localhost",
         "port": "1433",
         "database": "master",
+        "table_prefix": "prfx_"
     }
 
 
@@ -37,7 +38,7 @@ def mssql_dualconfig():
         "password": "wrong_password",
         "host": "localhost",
         "port": "1433",
-        "database": "master",
+        "database": "master"
     }
 
 
@@ -249,6 +250,7 @@ def test_disappearing_columns(mssql_target):
 
 
 def test_insert_merge(mssql_target):
+    print(dir(mssql_target))
     file_name = "insert_merge_part1.singer"
     singer_file_to_target(file_name, mssql_target)
 
