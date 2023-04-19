@@ -10,14 +10,32 @@ import sqlalchemy
 from singer_sdk.helpers._conformers import replace_leading_digit
 from singer_sdk.sinks import SQLSink
 from sqlalchemy import Column
-
+from typing import TYPE_CHECKING, Any, Iterable
 from target_mssql.connector import mssqlConnector
+from singer_sdk.sinks import SQLConnector
 
+if TYPE_CHECKING:
+    from sqlalchemy.sql import Executable
+
+    from singer_sdk.plugin_base import PluginBase
 
 class mssqlSink(SQLSink):
     """mssql target sink class."""
 
     connector_class = mssqlConnector
+
+
+    def __init__(
+        self,
+        target: PluginBase,
+        stream_name: str,
+        schema: dict,
+        key_properties: list[str] | None,
+        connector: SQLConnector | None = None,
+    ) -> None:
+        super().__init__(target, stream_name, schema, key_properties)
+        if self._config.get('table_prefix'):
+            self.stream_name = self._config.get('table_prefix') + stream_name
 
     # Copied purely to help with type hints
     @property

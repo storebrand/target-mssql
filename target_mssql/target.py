@@ -49,6 +49,11 @@ class Targetmssql(SQLTarget):
             th.StringType,
             description="Default target schema to write to",
         ),
+        th.Property(
+        "table_prefix",
+        th.StringType,
+        description="Prefix to add to table name"
+        )
     ).to_dict()
 
     default_sink_class = mssqlSink
