@@ -15,7 +15,6 @@ from target_mssql.connector import mssqlConnector
 
 if TYPE_CHECKING:
     from singer_sdk.plugin_base import PluginBase
-    from sqlalchemy.sql import Executable
 
 
 class mssqlSink(SQLSink):
