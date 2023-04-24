@@ -56,7 +56,7 @@ class Targetmssql(SQLTarget):
             "prefer_float_over_numeric",
             th.BooleanType,
             description="Use float data type for numbers (otherwise number type is used)",
-            default=False
+            default=False,
         ),
     ).to_dict()
 

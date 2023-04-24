@@ -143,3 +143,4 @@ config.json
 poetry.lock
 .dccache
 _jottings.py
+.security-notes.json
