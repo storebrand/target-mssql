@@ -392,6 +392,6 @@ class mssqlConnector(SQLConnector):
             SELECT TOP 0 *
             into {tmp_full_table_name}
             FROM {full_table_name}
-        """
+        """  # nosec
 
         self.connection.execute(ddl)

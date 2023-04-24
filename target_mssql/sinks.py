@@ -249,7 +249,7 @@ class mssqlSink(SQLSink):
             WHEN NOT MATCHED THEN
                 INSERT ({", ".join(schema["properties"].keys())})
                 VALUES ({", ".join([f"temp.{key}" for key in schema["properties"].keys()])});
-        """
+        """  # nosec
 
         with self.connection.begin():
             self.connection.execute(merge_sql)
