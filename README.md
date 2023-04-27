@@ -61,21 +61,22 @@ Regarding connection info, either the `sqlalchemy_url` or `username`, `password`
 
 ## Settings
 
-| Setting              | Required | Default | Description |
-|:---------------------|:--------:|:-------:|:------------|
-| sqlalchemy_url       | False    | None    | SQLAlchemy connection string |
-| username             | False    | None    | SQL Server username |
-| password             | False    | None    | SQL Server password |
-| host                 | False    | None    | SQL Server host |
-| port                 | False    | 1433    | SQL Server port |
-| database             | False    | None    | SQL Server database |
-| default_target_schema| False    | None    | Default target schema to write to |
-| stream_maps          | False    | None    | Config object for stream maps capability. For more information check out [Stream Maps](https://sdk.meltano.com/en/latest/stream_maps.html). |
-| stream_map_config    | False    | None    | User-defined config values to be used within map expressions. |
-| flattening_enabled   | False    | None    | 'True' to enable schema flattening and automatically expand nested properties. |
-| flattening_max_depth | False    | None    | The max depth to flatten schemas. |
+| Setting                  | Required | Default | Description |
+|:-------------------------|:--------:|:-------:|:------------|
+| sqlalchemy_url           | False    | None    | SQLAlchemy connection string |
+| username                 | False    | None    | SQL Server username |
+| password                 | False    | None    | SQL Server password |
+| host                     | False    | None    | SQL Server host |
+| port                     | False    | 1433    | SQL Server port |
+| database                 | False    | None    | SQL Server database |
+| default_target_schema    | False    | None    | Default target schema to write to |
+| table_prefix             | False    | None    | Prefix to add to table name |
+| prefer_float_over_numeric| False    |       0 | Use float data type for numbers (otherwise number type is used) |
+| stream_maps              | False    | None    | Config object for stream maps capability. For more information check out [Stream Maps](https://sdk.meltano.com/en/latest/stream_maps.html). |
+| stream_map_config        | False    | None    | User-defined config values to be used within map expressions. |
+| flattening_enabled       | False    | None    | 'True' to enable schema flattening and automatically expand nested properties. |
+| flattening_max_depth     | False    | None    | The max depth to flatten schemas. |
 
-A full list of supported settings and capabilities is available by running: `target-mssql --about`
 
 A full list of supported settings and capabilities for this
 target is available by running:

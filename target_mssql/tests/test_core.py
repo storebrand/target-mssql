@@ -148,6 +148,17 @@ def test_schema_no_properties(mssql_target):
 
 # TODO test that data is correct
 def test_schema_updates(mssql_target):
+    base_config = {
+        "schema": "dbo",
+        "username": "sa",
+        "password": "P@55w0rd",
+        "host": "localhost",
+        "port": "1433",
+        "database": "master",
+        "table_prefix": "prfx_",
+        "prefer_float_over_numeric": True,
+    }
+    mssql_target = Targetmssql(config=base_config)
     file_name = "schema_updates.singer"
     singer_file_to_target(file_name, mssql_target)
 

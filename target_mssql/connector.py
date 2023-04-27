@@ -357,8 +357,12 @@ class mssqlConnector(SQLConnector):
 
         if self._jsonschema_type_check(jsonschema_type, ("integer",)):
             return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.BIGINT())
+
         if self._jsonschema_type_check(jsonschema_type, ("number",)):
-            return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.NUMERIC(22, 16))
+            if self.config.get("prefer_float_over_numeric", False):
+                return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.FLOAT())
+            return cast(sqlalchemy.types.TypeEngine, sqlalchemy.types.NUMERIC(38, 16))
+
         if self._jsonschema_type_check(jsonschema_type, ("boolean",)):
             return cast(sqlalchemy.types.TypeEngine, mssql.VARCHAR(1))
 
@@ -388,6 +392,6 @@ class mssqlConnector(SQLConnector):
             SELECT TOP 0 *
             into {tmp_full_table_name}
             FROM {full_table_name}
-        """
+        """  # nosec
 
         self.connection.execute(ddl)
