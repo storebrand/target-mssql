@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional
+from textwrap import dedent
 
 import sqlalchemy
 from singer_sdk.helpers._conformers import replace_leading_digit
@@ -85,6 +86,44 @@ class mssqlSink(SQLSink):
 
         return record
 
+
+
+    def generate_insert_statement(
+        self,
+        full_table_name: str,
+        schema: dict,
+    ) -> Union[str, Executable]:
+        """Generate an insert statement for the given records.
+
+        Args:
+            full_table_name: the target table name.
+            schema: the JSON schema for the new table.
+
+        Returns:
+            An insert statement.
+        """
+        property_names = list(self.conform_schema(schema)["properties"].keys())
+
+        # Add wrapping bracket to accomodate e.g. spaces
+        column_names = [f'[{_}]' for _ in property_names]
+        insert_cols = ", ".join(column_names)
+        from sqlalchemy import bindparam
+
+        # convert params to :name and add in underscores if needed
+        _clean_params = list(map(str,map(bindparam, property_names)))
+
+        value_params = ",".join(_clean_params)
+        clean_params = [_.replace(':','') for _ in _clean_params]
+        import pdb; pdb.set_trace()
+        statement = dedent(
+            f"""\
+            INSERT INTO {full_table_name}
+            ({insert_cols})
+            VALUES ({value_params})
+            """
+        )
+        return statement.rstrip(), clean_params
+
     def bulk_insert_records(
         self,
         full_table_name: str,
@@ -105,10 +144,11 @@ class mssqlSink(SQLSink):
         Returns:
             True if table exists, False if not, None if unsure or undetectable.
         """
-        insert_sql = self.generate_insert_statement(
+        insert_sql, params = self.generate_insert_statement(
             full_table_name,
             schema,
         )
+
         if isinstance(insert_sql, str):
             insert_sql = sqlalchemy.text(insert_sql)
 
@@ -120,8 +160,8 @@ class mssqlSink(SQLSink):
         insert_records = []
         for record in records:
             insert_record = {}
-            for column in columns:
-                insert_record[column.name] = record.get(column.name)
+            for param, column in zip(params, columns):
+                insert_record[param] = record.get(column.name)
             insert_records.append(insert_record)
 
         self.connection.execute(insert_sql, insert_records)
