@@ -114,7 +114,6 @@ class mssqlSink(SQLSink):
 
         value_params = ",".join(_clean_params)
         clean_params = [_.replace(':','') for _ in _clean_params]
-        import pdb; pdb.set_trace()
         statement = dedent(
             f"""\
             INSERT INTO {full_table_name}
