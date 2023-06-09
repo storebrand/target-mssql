@@ -188,7 +188,7 @@ class mssqlSink(SQLSink):
                     self.logger.info("%s MAPPED TO %s", param, column)
                 insert_record[param] = record.get(column.name)
             insert_records.append(insert_record)
-            break
+
 
         self.connection.execute(insert_sql, insert_records)
 
