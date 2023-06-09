@@ -10,7 +10,7 @@ from textwrap import dedent
 import sqlalchemy
 from singer_sdk.helpers._conformers import replace_leading_digit
 from singer_sdk.sinks import SQLConnector, SQLSink
-from sqlalchemy import Column
+from sqlalchemy import Column, Table
 
 from target_mssql.connector import mssqlConnector
 
@@ -39,6 +39,25 @@ class mssqlSink(SQLSink):
     @property
     def target_table(self):
         return self.TARGET_TABLE
+
+    def set_target_table(self, full_table_name: str):
+        # We need to grab the schema_name and table_name
+        # for the Table class instance
+        _, schema_name, table_name = self.connector.parse_full_table_name(self, full_table_name=full_table_name)
+
+        # You also need a blank MetaData instance
+        # for the Table class instance
+        meta = MetaData()
+
+        # This is the Table instance that will autoload
+        # all the info about the table from the target server
+        table: Table = Table(table_name,
+                             meta,
+                             autoload=True,
+                             autoload_with=self.connector._engine,
+                             schema=schema_name)
+
+        self.TARGET_TABLE = table
 
     # Copied purely to help with type hints
     @property
