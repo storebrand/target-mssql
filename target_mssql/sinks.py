@@ -22,6 +22,7 @@ class mssqlSink(SQLSink):
     """mssql target sink class."""
 
     connector_class = mssqlConnector
+    TARGET_TABLE: Table = None
 
     def __init__(
         self,
@@ -34,6 +35,10 @@ class mssqlSink(SQLSink):
         super().__init__(target, stream_name, schema, key_properties)
         if self._config.get("table_prefix"):
             self.stream_name = self._config.get("table_prefix") + stream_name
+
+    @property
+    def target_table(self):
+        return self.TARGET_TABLE
 
     # Copied purely to help with type hints
     @property
@@ -108,7 +113,7 @@ class mssqlSink(SQLSink):
         column_names = [f'[{_}]' for _ in property_names]
         insert_cols = ", ".join(column_names)
         from sqlalchemy import bindparam
-
+        self.logger.info("COLUMN NAMES %s", column_names)
         # convert params to :name and add in underscores if needed
         _clean_params = list(map(str,map(bindparam, property_names)))
 
@@ -160,8 +165,11 @@ class mssqlSink(SQLSink):
         for record in records:
             insert_record = {}
             for param, column in zip(params, columns):
+                if 'bps' in column.name:
+                    self.logger.info("%s MAPPED TO %s", param, column)
                 insert_record[param] = record.get(column.name)
             insert_records.append(insert_record)
+            break
 
         self.connection.execute(insert_sql, insert_records)
 
@@ -265,18 +273,23 @@ class mssqlSink(SQLSink):
         """
         # TODO think about sql injeciton,
         # issue here https://github.com/MeltanoLabs/target-postgres/issues/22
-
+        bracket_props = [f'[{_}]' for _ in schema["properties"].keys()]
         join_condition = " and ".join(
-            [f"temp.{key} = target.{key}" for key in join_keys]
+            [f"temp.[{key}] = target.[{key}]" for key in join_keys]
         )
 
         update_stmt = ", ".join(
             [
                 f"target.{key} = temp.{key}"
-                for key in schema["properties"].keys()
+                for key in bracket_props
                 if key not in join_keys
             ]
         )  # noqa
+
+
+        insert_cols = ", ".join(bracket_props)
+        value_list = ", ".join([f"temp.{key}" for key in bracket_props])
+
 
         merge_sql = f"""
             MERGE INTO {to_table_name} AS target
@@ -286,8 +299,8 @@ class mssqlSink(SQLSink):
                 UPDATE SET
                     { update_stmt }
             WHEN NOT MATCHED THEN
-                INSERT ({", ".join(schema["properties"].keys())})
-                VALUES ({", ".join([f"temp.{key}" for key in schema["properties"].keys()])});
+                INSERT ({insert_cols})
+                VALUES ({value_list});
         """  # nosec
 
         with self.connection.begin():
@@ -339,6 +352,10 @@ class mssqlSink(SQLSink):
         Returns:
             The name transformed to snake case.
         """
+
+        if object_type=='column':
+            return name
+
         # strip non-alphanumeric characters, keeping - . _ and spaces
         name = re.sub(r"[^a-zA-Z0-9_\-\.\s]", "", name)
         # convert to snakecase
