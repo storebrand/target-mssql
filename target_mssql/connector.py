@@ -8,6 +8,7 @@ from singer_sdk.sinks import SQLConnector
 from sqlalchemy.dialects import mssql
 
 
+
 class mssqlConnector(SQLConnector):
     """The connector for mssql.
 
