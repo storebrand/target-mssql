@@ -7,8 +7,9 @@ import re
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional
 
 import sqlalchemy
+from singer_sdk.connectors.sql import SQLConnector
 from singer_sdk.helpers._conformers import replace_leading_digit
-from singer_sdk.sinks import SQLConnector, SQLSink
+from singer_sdk.sinks.sql import SQLSink
 from sqlalchemy import Column
 
 from target_mssql.connector import mssqlConnector
