@@ -385,8 +385,14 @@ class mssqlConnector(SQLConnector):
             f"{schema_name}.#{table_name}" if schema_name else f"#{table_name}"
         )
 
-        droptable = f"DROP TABLE IF EXISTS {tmp_full_table_name}"
-        self.connection.execute(droptable)
+        # Check if the temporary table exists and drop it if it does
+        check_and_drop_table = f"""
+        IF OBJECT_ID(N'{tmp_full_table_name}', N'U') IS NOT NULL
+        BEGIN
+            DROP TABLE {tmp_full_table_name};
+        END
+        """
+        self.connection.execute(check_and_drop_table)
 
         ddl = f"""
             SELECT TOP 0 *
