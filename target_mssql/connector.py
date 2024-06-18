@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from functools import cached_property
 from typing import Any, Dict, Iterable, List, Optional, cast
 
 import sqlalchemy
@@ -395,3 +396,7 @@ class mssqlConnector(SQLConnector):
         """  # nosec
 
         self.connection.execute(ddl)
+
+    @cached_property
+    def connection(self):
+        return self._engine.connect().execution_options(stream_results=True)
