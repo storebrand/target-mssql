@@ -7,6 +7,7 @@ import re
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional
 
 import sqlalchemy
+from singer_sdk import metrics
 from singer_sdk.connectors.sql import SQLConnector
 from singer_sdk.helpers._conformers import replace_leading_digit
 from singer_sdk.sinks.sql import SQLSink
@@ -16,6 +17,7 @@ from target_mssql.connector import mssqlConnector
 
 if TYPE_CHECKING:
     from singer_sdk.plugin_base import PluginBase
+    from sqlalchemy.engine import CursorResult
 
 
 class mssqlSink(SQLSink):
@@ -125,12 +127,10 @@ class mssqlSink(SQLSink):
                 insert_record[column.name] = record.get(column.name)
             insert_records.append(insert_record)
 
-        self.connection.execute(insert_sql, insert_records)
+        cursor: CursorResult = self.connection.execute(insert_sql, insert_records)
 
-        if isinstance(records, list):
-            return len(records)  # If list, we can quickly return record count.
-
-        return None  # Unknown record count.
+        with metrics.record_counter(full_table_name) as record_counter:
+            record_counter.increment(cursor.rowcount)
 
     def column_representation(
         self,
