@@ -5,12 +5,12 @@ environments:
 - name: prod
 default_environment: prod
 send_anonymous_usage_stats: true
-project_id: target-mssql
+project_id: "target-mssql-2012"
 plugins:
   extractors: []
   loaders:
-  - name: "target-mssql"
-    namespace: "target_mssql"
+  - name: "target-mssql-2012"
+    namespace: "target_mssql_2012"
     pip_url: -e .
     capabilities:
     - state
